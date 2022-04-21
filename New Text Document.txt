@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ImageFilters
+{
+	class Alpha_Trim_Filter
+	{
+		public byte[,] pixel;
+
+		//Count Sort
+		public static byte[] CountingSort(byte[] arr)
+		{
+			byte maxPixelNumber = arr.Max();
+			byte minPixelNumber = arr.Min();
+			byte[] NoOfItems = new byte [maxPixelNumber - minPixelNumber + 1];
+
+			for (int i = 0; i < NoOfItems.Length; i++) { 
+				NoOfItems[i] = 0; 
+			}
+			for (int i = 0; i < arr.Length; i++) {
+				NoOfItems[arr[i] - minPixelNumber]++; 
+			}
+
+			for (int i = minPixelNumber; i <= maxPixelNumber; i++)
+			{
+				for(int index = 0; NoOfItems[i - minPixelNumber]-- > 0;index++)
+				{
+					arr[index] = (byte)i;
+					index++;
+				}
+			}
+
+			return arr;
+		}
+
+		//Quick Sort 
+		public static int ArrSection(byte[] arr, int low, int high)
+		{
+			byte pivot = arr[high], tmp;
+			int startIteration = low;
+
+			for (int i = low; i <= high; i++)
+			{
+				if (arr[i] <= pivot)
+				{
+					tmp = arr[i];
+					arr[i] = arr[i];
+					arr[i++] = tmp;
+
+				}
+			}
+			tmp = arr[startIteration];
+			arr[startIteration] = arr[high];
+			arr[high] = tmp;
+			return startIteration;
+		}
+
+		public static byte[] quickSort(byte[] arr, int low, int high)
+		{
+			if (low < high)
+			{
+				int pi = ArrSection(arr, low, high);
+				quickSort(arr, low, pi - 1);
+				quickSort(arr, pi + 1, high);
+			}
+			return arr;
+		}
+
+
+
+
+	}
+}
